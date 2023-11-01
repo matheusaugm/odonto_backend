@@ -11,9 +11,9 @@ ENG: Install docker https://www.docker.com/get-started and download the postgres
 ```bash
 $docker pull postgres
 ```
-PTBR: Crie uma imagem do banco do açaí bh usando o comando:
+PTBR: Crie uma imagem do banco do odonto db usando o comando:
 
-ENG: Create a açaí bh database image using the command:
+ENG: Create an image of odonto backend database image using the command:
 ```bash
 $docker build -t odonto_db .
 ```
