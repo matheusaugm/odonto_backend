@@ -30,7 +30,42 @@ export async function createUser(data) {
 
     // Gera o token JWT
     const token = jwt.sign({ id: user.id }, secretKey, { expiresIn: '1d' }); // O token expira em 1 dia
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
     const sessionRepository = dataSource.getRepository(Session);
-    await sessionRepository.save({ token, user_id: user.id });
+    await sessionRepository.save({ token, usuario_sessao_id: user.id, data_expiracao:tomorrow }); // Correção aqui
     return { user, token };
+}
+
+export async function login(data) {
+    const userRepository = dataSource.getRepository(User);
+
+    const user = await userRepository.findOne({ where: { email: data.email } });
+    if (!user) {
+        throw new Error('Email não encontrado.');
+    }
+
+    const isValidPassword = await bcrypt.compare(data.password, user.password);
+    if (!isValidPassword) {
+        throw new Error('Senha incorreta.');
+    }
+
+    // Gera o token JWT
+    const token = jwt.sign({ id: user.id }, secretKey, { expiresIn: '1d' });
+
+    const sessionRepository = dataSource.getRepository(Session);
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    await sessionRepository.save({ token, usuario_sessao_id: user.id, data_expiracao:tomorrow });
+    return { user, token };
+}
+
+export const deleteUserService = async (email) => {
+    const userRepository = dataSource.getRepository(User);
+    const user = await userRepository.findOne({ where: { email: email } });
+    if (!user) {
+        throw new Error('Email não encontrado.');
+    }
+    await userRepository.delete(user);
+    return { message: "Usuário deletado com sucesso" };
 }

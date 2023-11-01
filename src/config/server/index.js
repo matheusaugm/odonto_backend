@@ -1,6 +1,6 @@
 import express from 'express';
 import cors from 'cors';
-import router from "../../routes/createUser.js";
+import router from "../../routes/userRoutes.js";
 import dataSource from "../database/index.js";
 const app = express();
 
