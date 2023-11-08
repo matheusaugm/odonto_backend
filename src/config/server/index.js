@@ -2,19 +2,33 @@ import express from 'express';
 import cors from 'cors';
 import router from "../../routes/userRoutes.js";
 import dataSource from "../database/index.js";
+import passport from "passport";
+import session from "express-session";
+
 const app = express();
 
 try {
     await dataSource.initialize();
-    console.log("Conectado ao banco")
-}catch (e) {
+    console.log("Conectado ao banco");
+} catch (e) {
     console.error(e);
-
 }
 
-app.use(cors())
+app.use(cors());
+
+// Add session handling before initializing passport
+app.use(session({
+    secret: process.env.SESSION_SECRET || 'default_secret', // Always use environment variables in production
+    resave: false,
+    saveUninitialized: false
+}));
+
+// Initialize Passport
+app.use(passport.initialize());
+app.use(passport.session());
+
 app.use(express.json());
-app.use(router)
+app.use(router);
 
 app.use('*', (_req, res, next) => {
     const err = new Error('Not Found');
@@ -29,7 +43,6 @@ app.use((err, res, _next) => {
 });
 
 app.set('port', process.env.PORT || 3000);
-console.log("futuras rotas")
-
+console.log("futuras rotas");
 
 export default app;

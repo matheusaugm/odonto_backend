@@ -1,4 +1,5 @@
 import {createUser, deleteUserService, login} from "../services/userServices.js";
+import passport from "passport";
 
 
 export const register = async (req, res) => {
@@ -45,3 +46,16 @@ export const deleteUser = async (req, res) => {
     }
 
 }
+
+export const startGoogleAuth = (req, res) => {
+    passport.authenticate('google', {
+        scope: ['email', 'profile']
+    })(req, res);
+};
+export const handleGoogleAuthCallback = (req, res) => {
+    passport.authenticate('google', {
+        failureRedirect: '/failed',
+        successRedirect: '/success'
+    })(req, res);
+};
+

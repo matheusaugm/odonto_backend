@@ -5,6 +5,8 @@ import jwt from 'jsonwebtoken';
 import dataSource from "../config/database/index.js";
 import {configDotenv} from "dotenv";
 import Session from "../models/Session.js";
+import passport from 'passport';
+import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
 configDotenv();
 
 const secretKey = process.env.JWT_TOKEN // Troque por sua própria chave secreta
@@ -69,3 +71,38 @@ export const deleteUserService = async (email) => {
     await userRepository.delete(user);
     return { message: "Usuário deletado com sucesso" };
 }
+passport.use(new GoogleStrategy({
+        clientID: process.env.GOOGLE_CLIENT_ID,
+        clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+        callbackURL: "/auth/google/callback" // This URL needs to be registered in your Google Developer Console
+    },
+    async (accessToken, refreshToken, profile, cb) => {
+        const userRepository = dataSource.getRepository(User);
+
+        // Check if the user already exists in the database
+        let user = await userRepository.findOne({ where: { googleId: profile.id } });
+
+        if (!user) {
+            // If the user doesn't exist, create a new one
+            user = userRepository.create({
+                googleId: profile.id,
+                name: profile.displayName,
+                email: profile.emails[0].value,
+                // Additional fields from the profile object can be saved as needed
+            });
+            await userRepository.save(user);
+        }
+
+        return cb(null, user);
+    }));
+
+// Serialize and deserialize user for session management (if you're using sessions)
+passport.serializeUser((user, done) => {
+    done(null, user.id);
+});
+
+passport.deserializeUser(async (id, done) => {
+    const userRepository = dataSource.getRepository(User);
+    const user = await userRepository.findOne(id);
+    done(null, user);
+});
