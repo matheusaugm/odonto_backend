@@ -34,6 +34,13 @@ export const userLogin = async (req, res)=> {
         return res.status(400).json({ error: error.message });
     }
 }
+export const getUserData = async (req, res) => {
+
+
+        return res.send(req.user);
+
+
+}
 
 export const deleteUser = async (req, res) => {
     try{
@@ -54,8 +61,8 @@ export const startGoogleAuth = (req, res) => {
 };
 export const handleGoogleAuthCallback = (req, res) => {
     passport.authenticate('google', {
-        failureRedirect: '/failed',
-        successRedirect: '/success'
+        failureRedirect: 'http://localhost:19006/login',
+        successRedirect: 'http://localhost:19006/', session: true
     })(req, res);
 };
 

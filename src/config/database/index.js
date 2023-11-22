@@ -2,6 +2,7 @@ import {DataSource} from 'typeorm';
 import {configDotenv} from "dotenv";
 import User from "../../models/User.js";
 import Session from "../../models/Session.js";
+import Menu from "../../models/Menu.js";
 
 
 configDotenv();
@@ -15,7 +16,8 @@ configDotenv();
         password: process.env.DB_PASS,
         synchronize: true,
         database: process.env.DB_NAME,
-        entities:[User, Session],
+        migrations: ['src/config/database/migrations/*.js'],
+        entities:[User, Session, Menu],
         logging: true
     })
 

@@ -13,8 +13,12 @@ try {
 } catch (e) {
    console.error(e);
 }
+const corsOptions = {
+    origin: 'http://localhost:19006',
+    credentials: true,
+};
 
-app.use(cors());
+app.use(cors(corsOptions));
 
 // Add session handling before initializing passport
 app.use(

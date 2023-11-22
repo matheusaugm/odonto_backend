@@ -25,7 +25,9 @@ const User = new EntitySchema({
             length: 100
         },
         image: {
-            type: "blob"
+            type: "blob",
+            nullable: true
+
         },
         date_create: {
             type: "datetime",

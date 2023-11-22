@@ -36,7 +36,9 @@ export async function createUser(data) {
     tomorrow.setDate(tomorrow.getDate() + 1);
     const sessionRepository = dataSource.getRepository(Session);
     await sessionRepository.save({ token, usuario_sessao_id: user.id, data_expiracao:tomorrow }); // Correção aqui
-    return { user, token };
+    const {password, ...userWithoutPassword} = user;
+
+    return { userWithoutPassword, token };
 }
 
 export async function login(data) {
@@ -59,7 +61,8 @@ export async function login(data) {
     const tomorrow = new Date();
     tomorrow.setDate(tomorrow.getDate() + 1);
     await sessionRepository.save({ token, usuario_sessao_id: user.id, data_expiracao:tomorrow });
-    return { user, token };
+    const {password, ...userWithoutPassword} = user;
+    return { userWithoutPassword, token };
 }
 
 export const deleteUserService = async (email) => {
@@ -80,20 +83,21 @@ passport.use(new GoogleStrategy({
         const userRepository = dataSource.getRepository(User);
 
         // Check if the user already exists in the database
-        let user = await userRepository.findOne({ where: { googleId: profile.id } });
+        let user = await userRepository.findOne({ where: { email: profile.emails[0].value } });
 
         if (!user) {
-            // If the user doesn't exist, create a new one
-            user = userRepository.create({
-                googleId: profile.id,
+            const newUserGoogleData ={
                 name: profile.displayName,
+                ra:'000000000',
                 email: profile.emails[0].value,
-                // Additional fields from the profile object can be saved as needed
-            });
-            await userRepository.save(user);
+                password: profile.id
+            }
+            // If the user doesn't exist, create a new one
+            user = await createUser(newUserGoogleData);
         }
+        const {password, ...userWithoutPassword} = user;
 
-        return cb(null, user);
+        return cb(null, userWithoutPassword);
     }));
 
 // Serialize and deserialize user for session management (if you're using sessions)
@@ -103,6 +107,7 @@ passport.serializeUser((user, done) => {
 
 passport.deserializeUser(async (id, done) => {
     const userRepository = dataSource.getRepository(User);
-    const user = await userRepository.findOne(id);
-    done(null, user);
+    const user = await userRepository.findOne({where:{id: id}});
+    const {password, ...userWithoutPassword} = user;
+    done(null, userWithoutPassword);
 });
