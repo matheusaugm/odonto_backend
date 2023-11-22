@@ -8,23 +8,23 @@ import {
     getUserData
 } from '../controllers/userController.js';
 
-const router = Router();
+const userRouter = Router();
 
-router.post('/createUser', register);
-router.post('/login', userLogin);
-router.get('/getUser', getUserData)
-router.delete('/deleteUser', deleteUser);
+userRouter.post('/createUser', register);
+userRouter.post('/login', userLogin);
+userRouter.get('/getUser', getUserData)
+userRouter.delete('/deleteUser', deleteUser);
 
 // Google OAuth routes
-router.get('/auth/google', startGoogleAuth);
-router.get('/auth/google/callback', handleGoogleAuthCallback);
+userRouter.get('/auth/google', startGoogleAuth);
+userRouter.get('/auth/google/callback', handleGoogleAuthCallback);
 
-router.get('/success', (req, res) => {
+userRouter.get('/success', (req, res) => {
     res.redirect(200,"http://localhost:19006/main");
 });
 
-router.get('/failed', (req, res) => {
+userRouter.get('/failed', (req, res) => {
     res.send("Authentication failed!");
 });
 
-export default router;
+export default userRouter;

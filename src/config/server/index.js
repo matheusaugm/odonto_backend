@@ -1,9 +1,10 @@
 import express from 'express';
 import cors from 'cors';
-import router from '../../routes/userRoutes.js';
 import dataSource from '../database/index.js';
 import passport from 'passport';
 import session from 'express-session';
+import userRouter from "../../routes/userRoutes.js";
+import menuRouter from "../../routes/menuRoutes.js";
 
 const app = express();
 
@@ -34,7 +35,8 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use(express.json());
-app.use(router);
+app.use(userRouter);
+app.use(menuRouter);
 
 app.use('*', (_req, res, next) => {
    const err = new Error('Not Found');
@@ -50,6 +52,7 @@ app.use((err, res, _next) => {
 
 app.set('port', process.env.PORT || 3000);
 console.log('Rotas:');
-console.log(router.stack.map((item) => item.route.path));
+console.log('userRoutes',userRouter.stack.map((item) => item.route.path));
+console.log('menuRoutes',menuRouter.stack.map((item) => item.route.path));
 
 export default app;

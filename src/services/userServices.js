@@ -31,11 +31,11 @@ export async function createUser(data) {
     await userRepository.save(user);
 
     // Gera o token JWT
-    const token = jwt.sign({ id: user.id }, secretKey, { expiresIn: '1d' }); // O token expira em 1 dia
+    const token = jwt.sign({ id: user.id }, secretKey, { expiresIn: '1d' });
     const tomorrow = new Date();
     tomorrow.setDate(tomorrow.getDate() + 1);
     const sessionRepository = dataSource.getRepository(Session);
-    await sessionRepository.save({ token, usuario_sessao_id: user.id, data_expiracao:tomorrow }); // Correção aqui
+    await sessionRepository.save({ token, usuario_sessao_id: user.id, data_expiracao:tomorrow });
     const {password, ...userWithoutPassword} = user;
 
     return { userWithoutPassword, token };
