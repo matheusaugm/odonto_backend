@@ -41,6 +41,14 @@ export const getUserData = async (req, res) => {
 
 
 }
+export const logoutUserGoogle = async (req, res) => {
+    if (req.user) {
+
+        req.logout();
+        res.send("done");
+    }
+}
+
 
 export const deleteUser = async (req, res) => {
     try{

@@ -5,7 +5,7 @@ import {
     userLogin,
     startGoogleAuth,
     handleGoogleAuthCallback,
-    getUserData
+    getUserData, logoutUserGoogle
 } from '../controllers/userController.js';
 
 const userRouter = Router();
@@ -13,6 +13,8 @@ const userRouter = Router();
 userRouter.post('/createUser', register);
 userRouter.post('/login', userLogin);
 userRouter.get('/getUser', getUserData)
+userRouter.get('/auth/logout"', getUserData)
+userRouter.get('/googleLogout', logoutUserGoogle)
 userRouter.delete('/deleteUser', deleteUser);
 
 // Google OAuth routes
