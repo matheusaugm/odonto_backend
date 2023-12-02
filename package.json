@@ -31,7 +31,8 @@
       "mysqljs": "^0.0.2-security",
       "nodemon": "^3.0.1",
       "passport": "^0.6.0",
-      "passport-google-oauth20": "^2.0.0"
+      "passport-google-oauth20": "^2.0.0",
+      "typeorm": "^0.3.17"
    },
    "devDependencies": {
       "typeorm": "^0.3.17"
