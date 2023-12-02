@@ -22,7 +22,7 @@ userRouter.get('/auth/google', startGoogleAuth);
 userRouter.get('/auth/google/callback', handleGoogleAuthCallback);
 
 userRouter.get('/success', (req, res) => {
-    res.redirect(200,"http://localhost:19006/main");
+    res.redirect(200,"odontonewton://main");
 });
 
 userRouter.get('/failed', (req, res) => {
