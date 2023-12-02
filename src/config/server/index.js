@@ -15,7 +15,7 @@ try {
    console.error(e);
 }
 const corsOptions = {
-    origin: 'http://localhost:19006',
+    origin: '*',
     credentials: true,
 };
 
