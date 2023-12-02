@@ -46,12 +46,12 @@ export async function login(data) {
 
     const user = await userRepository.findOne({ where: { email: data.email } });
     if (!user) {
-        throw new Error('Email não encontrado.');
+        throw new Error('Email ou/e senha incorretos.');
     }
 
     const isValidPassword = await bcrypt.compare(data.password, user.password);
     if (!isValidPassword) {
-        throw new Error('Senha incorreta.');
+        throw new Error('Email ou/e senha incorretos.');
     }
 
     // Gera o token JWT
