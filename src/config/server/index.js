@@ -12,6 +12,7 @@ try {
    await dataSource.initialize();
    console.log('Conectado ao banco');
 } catch (e) {
+    console.log('Erro ao conectar ao banco');
    console.error(e);
 }
 const corsOptions = {
