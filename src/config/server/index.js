@@ -16,7 +16,7 @@ try {
    console.error(e);
 }
 const corsOptions = {
-    origin: ['https://snack-web-player.s3.us-west-1.amazonaws.com', 'https://localhost:3000'],
+    origin: ['https://snack-web-player.s3.us-west-1.amazonaws.com', 'https://localhost:3000','https://localhost:19006'],
     credentials: true,
 };
 
