@@ -70,7 +70,7 @@ export const startGoogleAuth = (req, res) => {
 export const handleGoogleAuthCallback = (req, res) => {
     passport.authenticate('google', {
         failureRedirect: 'odontonewton://login',
-        successRedirect: 'odontonewton://', session: true
+        successRedirect: 'odontonewton://main', session: true
     })(req, res);
 };
 
