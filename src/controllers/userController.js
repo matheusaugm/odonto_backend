@@ -69,8 +69,8 @@ export const startGoogleAuth = (req, res) => {
 };
 export const handleGoogleAuthCallback = (req, res) => {
     passport.authenticate('google', {
-        failureRedirect: 'http://localhost:19006/login',
-        successRedirect: 'http://localhost:19006/', session: true
+        failureRedirect: 'odontonewton://login',
+        successRedirect: 'odontonewton://', session: true
     })(req, res);
 };
 
